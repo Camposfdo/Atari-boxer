@@ -1,0 +1,3 @@
+rootProject.name = 'boxing-game-2'
+
+include 'core', 'html'

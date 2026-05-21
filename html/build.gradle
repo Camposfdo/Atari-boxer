@@ -1,0 +1,35 @@
+plugins {
+    id 'war'
+    id 'org.wisepersist.gwt' version '1.1.16'
+}
+
+dependencies {
+    implementation project(':core')
+    implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+    implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+}
+
+gwt {
+    gwtVersion = '2.10.0'
+    modules 'com.boxinggame.GdxDefinition'
+    minHeapSize = '512M'
+    maxHeapSize = '2048M'
+    sourceLevel = 11
+}
+
+tasks.register('dist', Copy) {
+    into layout.buildDirectory.dir('dist')
+}
+
+afterEvaluate {
+    def gwtCompileTask = ['gwtCompile', 'compileGwt', 'gwt'].collect { tasks.findByName(it) }.find { it != null }
+    if (gwtCompileTask == null) {
+        throw new GradleException("No GWT compile task found. Checked: gwtCompile, compileGwt, gwt")
+    }
+
+    tasks.named('dist') {
+        dependsOn gwtCompileTask
+        from layout.buildDirectory.dir('gwt/out')
+    }
+}

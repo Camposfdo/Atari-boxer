@@ -1,0 +1,12 @@
+# Local tooling and caches
+.tools/
+.gradle/
+
+# Build outputs
+build/
+**/build/
+out/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
